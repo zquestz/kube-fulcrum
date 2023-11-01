@@ -7,7 +7,7 @@ Kubernetes configurations for Fulcrum on GCE.
 1. Add a new blank disk on GCE called `fulcrum-data` that is 100GB.
 2. Update `main.conf` with your hostname, bitcoind credentials and any custom settings.
 3. Base64 encode `main.conf`, and paste it in `kube/fulcrum-secrets.yml`.
-4. Run `kubectl apply -f kube/fulcrum-certs-job.yml` to setup your self signed cert.
+4. Run `kubectl apply -f kube/fulcrum-certs-job.yml` to setup your self signed cert. To make things simpler, self signed certs are in `/data` and production certs are in `/config`. Just make sure to point to the correct ones in your configuration.
 5. Run `kubectl apply -f kube/fulcrum-secrets.yml` to deploy your Fulcrum configuration.
 6. Run `kubectl apply -f kube/fulcrum-deployment.yml` to deploy Fulcrum. Make sure the logs look okay.
 7. Deploy the required services, the only required service is `fulcrum-srv.yml`.

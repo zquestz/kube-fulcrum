@@ -56,3 +56,9 @@ spec:
               - key: config
                 path: "main.conf"
                 mode: 0600
+              - key: cert
+                path: "fulcrum.crt"
+                mode: 0600
+              - key: key
+                path: "fulcrum.key"
+                mode: 0600
