@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: fulcrum-stats
+  namespace: default
+spec:
+  ports:
+    - port: 8080
+      targetPort: 8080
+  selector:
+    service: fulcrum
+  type: ClusterIP

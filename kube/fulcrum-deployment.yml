@@ -1,0 +1,58 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: default
+  labels:
+    service: fulcrum
+    version: 1.9.2
+  name: fulcrum
+spec:
+  strategy:
+    type: Recreate
+  replicas: 1
+  selector:
+    matchLabels:
+      service: fulcrum
+  template:
+    metadata:
+      labels:
+        service: fulcrum
+    spec:
+      containers:
+        - args:
+            - /config/main.conf
+          command:
+            - Fulcrum
+          image: cculianu/fulcrum:v1.9.2
+          imagePullPolicy: Always
+          name: fulcrum
+          volumeMounts:
+            - mountPath: /data
+              name: fulcrum-data
+            - mountPath: /config
+              name: fulcrum-config
+          resources:
+            requests:
+              memory: "5Gi"
+          ports:
+            - name: admin
+              containerPort: 8000
+            - name: stats
+              containerPort: 8080
+            - name: ssl
+              containerPort: 50002
+            - name: wss
+              containerPort: 50004
+      restartPolicy: Always
+      volumes:
+        - name: fulcrum-data
+          gcePersistentDisk:
+            pdName: fulcrum-data
+            fsType: ext4
+        - name: fulcrum-config
+          secret:
+            secretName: "fulcrum"
+            items:
+              - key: config
+                path: "main.conf"
+                mode: 0600
